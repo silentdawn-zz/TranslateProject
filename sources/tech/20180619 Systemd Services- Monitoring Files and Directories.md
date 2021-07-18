@@ -69,9 +69,9 @@ For the time being, let’s make _picmonitor.sh_ save a time-stamped copy of _mo
 cp /home/[user name]/monitor/monitor.jpg /home/[user name]/monitor/"`date`.jpg"
 ```
 
-### Udev Changes
+### 调整 Udev
 
-You have to change the custom Udev rule you wrote in [the previous installment][3] so everything works. Edit _/etc/udev/rules.d/01-webcam.rules_ so instead of looking like this:
+需要根据 [之前的安装][3] 修改 Udev 规则，以便正常工作。编辑 _/etc/udev/rules.d/01-webcam.rules_ 将下面的内容
 
 ```
 ACTION=="add", SUBSYSTEM=="video4linux", ATTRS{idVendor}=="03f0",
@@ -79,7 +79,7 @@ ACTION=="add", SUBSYSTEM=="video4linux", ATTRS{idVendor}=="03f0",
   MODE="0666", ENV{SYSTEMD_WANTS}="webcam.service"
 ```
 
-It looks like this:
+更改为
 
 ```
 ACTION=="add", SUBSYSTEM=="video4linux", ATTRS{idVendor}=="03f0",
@@ -87,9 +87,9 @@ ACTION=="add", SUBSYSTEM=="video4linux", ATTRS{idVendor}=="03f0",
   MODE="0666", ENV{SYSTEMD_WANTS}="picchanged.path"
 ```
 
-The new rule, instead of calling _webcam.service_ , now calls _picchanged.path_ when your webcam gets detected. (Note that you will have to change the `idVendor` and `IdProduct` to those of your own webcam -- you saw how to find these out previously).
+在检测到网络摄像头后，新规则将不再调用 _webcam.service_ ，转而调用 _picchanged.path_ （注意，这里需要将 `idVendor` 和 `IdProduct` 更改为你的网络摄像头对应的值，在前面你可以找到获取这两个值的方法）。
 
-For the record, I also changed _checkimage.sh_ from using PNG to JPEG images. I did this because I found some dependency problems with PNG images when working with _mplayer_ on some versions of Debian. _checkimage.sh_ now looks like this:
+在记录过程，我把 _checkimage.sh_ 中的 PNG 格式改为了 JPEG 格式，因为我发现在有些版本的 Debian 系统下，使用 _mplayer_ 处理 PNG 格式的图像时存在依赖问题。现在 _checkimage.sh_ 的内容如下：
 
 ```
 #!/bin/bash
@@ -117,9 +117,9 @@ do
 done
 ```
 
-### Firing up
+### 触发
 
-This is a multi-unit service that, when all its bits and pieces are in place, you don't have to worry much about: you plug in the designated webcam (or boot the machine with the webcam already connected), _picchanged.path_ gets started thanks to the Udev rule and takes over, bringing up the _webcam.service_ and starting to check on the snaps. There is nothing else you need to do.
+这是一个包含多个 unit 的服务，如果所有的组件都就位了，就没什么可担心的了：插入网络摄像头（或者启动已经连接了网络摄像头的机器）， _picchanged.path_ 将被 Udev 规则启动并接管后续工作，激活 _webcam.service_，开始监视抓拍的图像。除此之外，不需要再做任何操作。
 
 ### 结论
 
