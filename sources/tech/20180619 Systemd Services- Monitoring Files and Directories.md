@@ -121,15 +121,15 @@ done
 
 This is a multi-unit service that, when all its bits and pieces are in place, you don't have to worry much about: you plug in the designated webcam (or boot the machine with the webcam already connected), _picchanged.path_ gets started thanks to the Udev rule and takes over, bringing up the _webcam.service_ and starting to check on the snaps. There is nothing else you need to do.
 
-### Conclusion
+### 结论
 
-Having the process split into two doesn't only help explain how path units work, but it’s also very useful for debugging. One service does not "touch" the other in any way, which means that you could, for example, improve the "motion detection" part, and it would be very easy to roll back if things didn't work as expected.
+将处理过程分解为两部分，不但有助于解释 path unit 的工作原理，而且在调试时也非常有用。一个服务不以任何方式与另一个产生关联，意味着你可以在改进“变动监视”部分时，如果改进后的行为不符合预期，能够很容易进行回滚。
 
-Admittedly, the example is a bit goofy, as there are definitely [better ways of monitoring movement using a webcam][5]. But remember: the main aim of these articles is to help you learn how systemd units work within a context.
+尽管本文给出的例子貌似有点傻，而且肯定存在[监视网络摄像头数据文件的更好方式][5]，但是勿忘初心：本文的主要目标是帮助读者理解在给定的场景下 systemd 组件的工作原理。
 
-Next time, we'll finish up with systemd units by looking at some of the other types of units available and show how to improve your home-monitoring system further by setting up service that sends images to another machine.
+下次，我们将以介绍 systemd 其它一些类型 unit 的方式结束 systemd 的话题，并演示如何设定向其它机器发送图像的服务来改进家庭摄像头的功能。
 
-Learn more about Linux through the free ["Introduction to Linux" ][6]course from The Linux Foundation and edX.
+顺便提个醒，你可以在 Linux Foundation 和 edX 上免费学习["Linux 简介" ][6]课程。
 
 --------------------------------------------------------------------------------
 
